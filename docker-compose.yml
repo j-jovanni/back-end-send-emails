@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  email-service:
+    build: .
+    command: go run cmd/email/main.go
+    ports:
+      - "8081:8081"
+    environment:
+      - MONGO_URI=mongodb://mongo:27017
+
+  recipient-service:
+    build: .
+    command: go run cmd/recipient/main.go
+    ports:
+      - "8082:8082"
+    environment:
+      - MONGO_URI=mongodb://mongo:27017
+
+  template-service:
+    build: .
+    command: go run cmd/template/main.go
+    ports:
+      - "8083:8083"
+    environment:
+      - MONGO_URI=mongodb://mongo:27017
+
+  stats-service:
+    build: .
+    command: go run cmd/stats/main.go
+    ports:
+      - "8084:8084"
+    environment:
+      - MONGO_URI=mongodb://mongo:27017
+
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
